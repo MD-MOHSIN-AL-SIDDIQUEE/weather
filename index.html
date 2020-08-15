@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Temperature Hot</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            background: url(images/bg-image.jpg) no-repeat;
+            background-size: cover;
+            height: 100vh;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <form class="col-md-6 m-auto py-5">
+            <div class="input-group mb-3">
+                <input id="cityinput"type="text" class="form-control" placeholder="Enter a location for Weather ...">
+                <div class="input-group-append">
+                    <button id="search_button"type="button" class="btn btn-danger">Search</button>
+                </div>
+            </div>
+        </form>
+        <div class="weather-status text-white text-center">
+            <img src="http://openweathermap.org/img/wn/02d@2x.png" alt="">
+            <h1 id="cityName" >Dhaka</h1>
+            <h3><span id="temp">38.06</span>&deg;C</h3>
+            <h1 id="description"class="lead">Clouds</h1>
+        </div>
+    </div>
+ <script>
+        
+   document.getElementById("search_button").addEventListener("click",function(){
+        cityname=document.getElementById("cityinput").value;
+        find_city=new findcity(cityname);
+
+        find_city.loadData().then(data => {
+           get_temp=Math.floor(data.main.temp-273)
+           document.getElementById("temp").innerText = get_temp;
+           get_description=data.weather[0].description;
+           console.log(get_description)
+           document.getElementById("description").innerText = get_description;
+           document.getElementById("cityName").innerText = cityname;
+           
+ 
+        })
+        
+     })
+
+
+    class findcity{
+        constructor(taking_city){
+            this.city=taking_city; 
+            this.appid='f90f81ce9425fc92e84aef265782245b';
+        }
+        async loadData(){
+         const response = await fetch(`http://api.openweathermap.org/data/2.5/weather?q=${this.city}&appid=${this.appid}`)
+         const data = await response.json();
+         return data;
+        }}
+     
+</script>
+
+</body>
+
+</html>
