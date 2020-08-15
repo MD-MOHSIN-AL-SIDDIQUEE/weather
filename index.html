@@ -29,10 +29,10 @@
             </div>
         </form>
         <div class="weather-status text-white text-center">
-            <img src="http://openweathermap.org/img/wn/02d@2x.png" alt="">
-            <h1 id="cityName" >Dhaka</h1>
-            <h3><span id="temp">38.06</span>&deg;C</h3>
-            <h1 id="description"class="lead">Clouds</h1>
+            <img id="img"src="http://openweathermap.org/img/wn/02d@2x.png" alt="">
+            <h1 id="cityName" ></h1>
+            <h3><span id="temp"></span></h3>
+            <h1 id="description"class="lead"></h1>
         </div>
     </div>
  <script>
@@ -43,13 +43,15 @@
 
         find_city.loadData().then(data => {
            get_temp=Math.floor(data.main.temp-273)
-           document.getElementById("temp").innerText = get_temp;
+           document.getElementById("temp").innerHTML =  get_temp + ' ' + `&deg;C`;
            get_description=data.weather[0].description;
            console.log(get_description)
            document.getElementById("description").innerText = get_description;
-           document.getElementById("cityName").innerText = cityname;
-           
- 
+           document.getElementById("cityName").innerText = data.name;
+           icon = document.getElementById('img').innerHTML;
+           const display_icon = ("<img src='https://openweathermap.org/img/wn/" + data.weather[0].icon + "@2x.png'>")
+           document.getElementById('img').innerHTML= display_icon;
+           document.getElementById("cityinput").innerText ='';
         })
         
      })
@@ -61,7 +63,7 @@
             this.appid='f90f81ce9425fc92e84aef265782245b';
         }
         async loadData(){
-         const response = await fetch(`http://api.openweathermap.org/data/2.5/weather?q=${this.city}&appid=${this.appid}`)
+         const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${this.city}&appid=${this.appid}`)
          const data = await response.json();
          return data;
         }}
